@@ -1,0 +1,18 @@
+/* HACK-ATTACK laser-line palette · draft 2026-10-02 · Bruton approximation, not true laser colour */
+:root {
+  --laser-405nm: #8200C8; /* Violet diode (Blu-ray) */
+  --laser-445nm: #0028FF; /* Blue diode (high power) */
+  --laser-473nm: #00B7FF; /* Blue DPSS */
+  --laser-488nm: #00F7FF; /* Argon-ion / OPSL */
+  --laser-514_5nm: #1CFF00; /* Argon-ion green */
+  --laser-520nm: #36FF00; /* Green diode */
+  --laser-532nm: #65FF00; /* Green DPSS (doubled Nd) */
+  --laser-543_5nm: #8DFF00; /* Green HeNe */
+  --laser-561nm: #C6FF00; /* Yellow-green DPSS */
+  --laser-594_1nm: #FFD200; /* Yellow HeNe */
+  --laser-604_6nm: #FFAE00; /* Orange HeNe */
+  --laser-632_8nm: #FF4300; /* Red HeNe */
+  --laser-635nm: #FF3900; /* Red diode */
+  --laser-650nm: #FF0000; /* Red diode (DVD, pointers) */
+  --laser-660nm: #FF0000; /* Deep-red diode */
+}

@@ -1,0 +1,170 @@
+{
+  "source": "Common laser lines legend, Force-Field Brand Guidelines canvas, 2026-10-01. Hex = Bruton wavelength-to-RGB approximation (gamma 0.8); not the true laser colour.",
+  "colors": [
+    {
+      "nm": 405,
+      "name": "Violet diode (Blu-ray)",
+      "hex": "#8200C8",
+      "rgb": [
+        130,
+        0,
+        200
+      ],
+      "token": "laser-405nm"
+    },
+    {
+      "nm": 445,
+      "name": "Blue diode (high power)",
+      "hex": "#0028FF",
+      "rgb": [
+        0,
+        40,
+        255
+      ],
+      "token": "laser-445nm"
+    },
+    {
+      "nm": 473,
+      "name": "Blue DPSS",
+      "hex": "#00B7FF",
+      "rgb": [
+        0,
+        183,
+        255
+      ],
+      "token": "laser-473nm"
+    },
+    {
+      "nm": 488,
+      "name": "Argon-ion / OPSL",
+      "hex": "#00F7FF",
+      "rgb": [
+        0,
+        247,
+        255
+      ],
+      "token": "laser-488nm"
+    },
+    {
+      "nm": 514.5,
+      "name": "Argon-ion green",
+      "hex": "#1CFF00",
+      "rgb": [
+        28,
+        255,
+        0
+      ],
+      "token": "laser-514_5nm"
+    },
+    {
+      "nm": 520,
+      "name": "Green diode",
+      "hex": "#36FF00",
+      "rgb": [
+        54,
+        255,
+        0
+      ],
+      "token": "laser-520nm"
+    },
+    {
+      "nm": 532,
+      "name": "Green DPSS (doubled Nd)",
+      "hex": "#65FF00",
+      "rgb": [
+        101,
+        255,
+        0
+      ],
+      "token": "laser-532nm"
+    },
+    {
+      "nm": 543.5,
+      "name": "Green HeNe",
+      "hex": "#8DFF00",
+      "rgb": [
+        141,
+        255,
+        0
+      ],
+      "token": "laser-543_5nm"
+    },
+    {
+      "nm": 561,
+      "name": "Yellow-green DPSS",
+      "hex": "#C6FF00",
+      "rgb": [
+        198,
+        255,
+        0
+      ],
+      "token": "laser-561nm"
+    },
+    {
+      "nm": 594.1,
+      "name": "Yellow HeNe",
+      "hex": "#FFD200",
+      "rgb": [
+        255,
+        210,
+        0
+      ],
+      "token": "laser-594_1nm"
+    },
+    {
+      "nm": 604.6,
+      "name": "Orange HeNe",
+      "hex": "#FFAE00",
+      "rgb": [
+        255,
+        174,
+        0
+      ],
+      "token": "laser-604_6nm"
+    },
+    {
+      "nm": 632.8,
+      "name": "Red HeNe",
+      "hex": "#FF4300",
+      "rgb": [
+        255,
+        67,
+        0
+      ],
+      "token": "laser-632_8nm"
+    },
+    {
+      "nm": 635,
+      "name": "Red diode",
+      "hex": "#FF3900",
+      "rgb": [
+        255,
+        57,
+        0
+      ],
+      "token": "laser-635nm"
+    },
+    {
+      "nm": 650,
+      "name": "Red diode (DVD, pointers)",
+      "hex": "#FF0000",
+      "rgb": [
+        255,
+        0,
+        0
+      ],
+      "token": "laser-650nm"
+    },
+    {
+      "nm": 660,
+      "name": "Deep-red diode",
+      "hex": "#FF0000",
+      "rgb": [
+        255,
+        0,
+        0
+      ],
+      "token": "laser-660nm"
+    }
+  ]
+}
