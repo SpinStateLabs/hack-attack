@@ -26,6 +26,7 @@ npm run dev:api & npm run dev:worker
 npm run build:site              # needs the API running (or BUILD_ALLOW_EMPTY=true)
 ```
 
+CI (`.github/workflows/ci.yml`) runs typecheck, tests and build on every PR against a Postgres 16 service.
 Tests need a Postgres 16 database (default `postgres://postgres@127.0.0.1:5433/hackattack_test`, override with
 `TEST_DATABASE_URL`):
 
