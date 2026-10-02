@@ -9,3 +9,7 @@ Status: early build. Registry-first; event data, agents and publishing channels 
 - `HACK-ATTACK-BRAND.md` - brand guidelines (draft, not locked)
 - `hack-attack-laser-palette.css` / `.json` - laser-line colour tokens
 - `laser-lines-legend.png` - palette source legend
+
+## License
+
+MIT - see `LICENSE`.
