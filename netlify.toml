@@ -1,0 +1,43 @@
+# Netlify serves the static site and read-only feeds only. No Netlify Functions, no delivery logic.
+# Set in the Netlify UI: PUBLIC_API_URL, PUBLIC_SITE_URL, TURNSTILE_SITE_KEY (site key is public).
+# The API triggers rebuilds through a Netlify build hook (NETLIFY_BUILD_HOOK_URL, a Fly secret).
+
+[build]
+  command = "npm run build:site"
+  publish = "site"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; connect-src 'self' https://api.hack-attack.ai; style-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+    Referrer-Policy = "no-referrer"
+    X-Content-Type-Options = "nosniff"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/events.json"
+  [headers.values]
+    Content-Type = "application/json; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=60"
+
+[[headers]]
+  for = "/feed.xml"
+  [headers.values]
+    Content-Type = "application/rss+xml; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/atom.xml"
+  [headers.values]
+    Content-Type = "application/atom+xml; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
+  for = "/llms.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Access-Control-Allow-Origin = "*"

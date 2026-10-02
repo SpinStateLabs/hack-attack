@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<link rel="stylesheet" href="/assets/palette.css">
+<link rel="stylesheet" href="/assets/style.css">
+<script src="/config.js"></script>
+<script src="/assets/turnstile-loader.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad" async defer></script>
+<title>Manage preferences · HACK-ATTACK</title>
+</head>
+<body><main>
+<h1>HACK<span>-</span>ATTACK</h1>
+<section id="request" hidden>
+<h2>Get a link to your preferences</h2>
+<form id="req">
+  <label for="email">Email</label>
+  <input id="email" type="email" required autocomplete="email">
+  <div id="ts1"></div>
+  <button>Email me a link</button>
+  <p class="status" id="st1"></p>
+</form>
+</section>
+<section id="prefs" hidden>
+<h2>Preferences for <span id="who"></span></h2>
+<form id="pf">
+  <fieldset id="cats"></fieldset>
+  <label for="sev">Minimum severity</label>
+  <select id="sev"><option>info</option><option>low</option><option>medium</option><option>high</option><option>critical</option></select>
+  <label for="delivery">Delivery</label>
+  <select id="delivery"><option value="instant">Instant</option><option value="digest">Daily digest</option></select>
+  <div id="ts2"></div>
+  <button>Save</button>
+  <p class="status" id="st2"></p>
+</form>
+<p><button id="unsub" type="button">Unsubscribe from everything</button></p>
+</section>
+</main>
+<script type="module" src="/assets/pages/manage.js"></script>
+</body></html>

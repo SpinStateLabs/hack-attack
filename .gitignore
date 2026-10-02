@@ -7,3 +7,13 @@ __pycache__/
 .DS_Store
 Thumbs.db
 desktop.ini
+dist/
+coverage/
+site/events.json
+site/feed.xml
+site/atom.xml
+site/llms.txt
+site/config.js
+site/events/
+!.env.example
+site/assets/palette.css
