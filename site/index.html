@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<link rel="stylesheet" href="/assets/palette.css">
+<link rel="stylesheet" href="/assets/style.css">
+<script src="/config.js"></script>
+<script src="/assets/turnstile-loader.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad" async defer></script>
+<title>HACK-ATTACK</title>
+<link rel="alternate" type="application/rss+xml" title="HACK-ATTACK" href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="HACK-ATTACK" href="/atom.xml">
+</head>
+<body><main>
+<h1>HACK<span>-</span>ATTACK</h1>
+<p class="muted">Public warning service for AI hacks and attacks. Every warning is confirmed and approved by a human before it goes out.</p>
+
+<section>
+<h2>Email alerts</h2>
+<form id="sub">
+  <label for="email">Email</label>
+  <input id="email" type="email" required autocomplete="email">
+  <fieldset id="cats"></fieldset>
+  <label for="sev">Minimum severity</label>
+  <select id="sev"><option>info</option><option>low</option><option>medium</option><option selected>high</option><option>critical</option></select>
+  <label for="delivery">Delivery</label>
+  <select id="delivery"><option value="instant" selected>Instant</option><option value="digest">Daily digest</option></select>
+  <label><input type="checkbox" id="consent" required> <span id="consent-text">Loading consent wording…</span></label>
+  <div id="ts"></div>
+  <button>Subscribe</button>
+  <p class="status" id="st"></p>
+</form>
+<p class="muted">Already subscribed? <a href="/manage.html">Manage preferences</a>.</p>
+</section>
+
+<section>
+<h2>Other ways to follow</h2>
+<ul>
+  <li><a href="/events.json">events.json</a>, <a href="/feed.xml">RSS</a>, <a href="/atom.xml">Atom</a>, <a href="/llms.txt">llms.txt</a></li>
+  <li><a href="/webhooks.html">Webhooks</a> (signed, Standard Webhooks)</li>
+</ul>
+</section>
+
+<section>
+<h2>Latest warnings</h2>
+<ul id="events"><li class="muted">Loading…</li></ul>
+</section>
+</main>
+<script type="module" src="/assets/pages/index.js"></script>
+</body></html>

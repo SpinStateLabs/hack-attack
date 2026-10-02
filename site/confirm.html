@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<link rel="stylesheet" href="/assets/palette.css">
+<link rel="stylesheet" href="/assets/style.css">
+<script src="/config.js"></script>
+<script src="/assets/turnstile-loader.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad" async defer></script>
+<title>Confirm subscription · HACK-ATTACK</title>
+</head>
+<body><main>
+<h1>HACK<span>-</span>ATTACK</h1>
+<section>
+<h2>Confirm your subscription</h2>
+<p>Press the button to start receiving alerts. (We ask for a click so that email security scanners cannot confirm on your behalf.)</p>
+<div id="ts"></div>
+<button id="go">Confirm subscription</button>
+<p class="status" id="st"></p>
+</section>
+</main>
+<script type="module" src="/assets/pages/confirm.js"></script>
+</body></html>

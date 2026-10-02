@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<link rel="stylesheet" href="/assets/palette.css">
+<link rel="stylesheet" href="/assets/style.css">
+<script src="/config.js"></script>
+<script src="/assets/turnstile-loader.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad" async defer></script>
+<title>Webhooks · HACK-ATTACK</title>
+</head>
+<body><main>
+<h1>HACK<span>-</span>ATTACK</h1>
+<section>
+<h2>Register a webhook</h2>
+<form id="reg">
+  <label for="url">HTTPS endpoint URL</label>
+  <input id="url" type="url" required placeholder="https://example.com/hooks/hack-attack">
+  <fieldset id="cats"></fieldset>
+  <label for="sev">Minimum severity</label>
+  <select id="sev"><option>info</option><option>low</option><option>medium</option><option selected>high</option><option>critical</option></select>
+  <div id="ts"></div>
+  <button>Register</button>
+  <p class="status" id="st"></p>
+</form>
+<div id="result" hidden>
+  <p><strong>Save these now. They are shown once.</strong></p>
+  <pre id="creds"></pre>
+</div>
+</section>
+
+<section>
+<h2>How it works</h2>
+<ol>
+  <li><strong>Challenge.</strong> We POST <code>{"type":"webhook.verification","data":{"challenge":"…"}}</code> to your URL. Reply 2xx with the challenge as the raw body or as <code>{"challenge":"…"}</code>.</li>
+  <li><strong>Secret.</strong> On success you get a signing secret (<code>whsec_…</code>) and a management token.</li>
+  <li><strong>Test event.</strong> A signed <code>test</code> event follows immediately.</li>
+  <li><strong>Events.</strong> <code>event.published</code> and <code>event.retracted</code>, body <code>{"type","timestamp","data"}</code>.</li>
+</ol>
+<p>Signatures follow <a href="https://www.standardwebhooks.com/">Standard Webhooks</a>: headers <code>webhook-id</code>, <code>webhook-timestamp</code>, <code>webhook-signature</code> (<code>v1,</code> + base64 HMAC-SHA256 of <code>id.timestamp.body</code>, keyed with the base64-decoded secret after <code>whsec_</code>). Use any Standard Webhooks library to verify. De-duplicate on <code>webhook-id</code>: it is stable across retries.</p>
+<p>Retries: about 5 s, 5 min, 30 min, 2 h, 5 h, 10 h, 10 h. After 5 deliveries in a row fail all retries, the endpoint is disabled; re-enable it with <code>POST /v1/webhooks/{id}/enable</code> and your management token.</p>
+<p>Only public HTTPS destinations are accepted. Private, loopback and link-local addresses are refused, redirects are not followed, and requests time out after 5 seconds.</p>
+</section>
+</main>
+<script type="module" src="/assets/pages/webhooks.js"></script>
+</body></html>
