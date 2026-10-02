@@ -17,3 +17,4 @@ site/config.js
 site/events/
 !.env.example
 site/assets/palette.css
+.claude/worktrees/
