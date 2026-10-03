@@ -17,4 +17,3 @@ site/config.js
 site/events/
 !.env.example
 site/assets/palette.css
-.netlify/

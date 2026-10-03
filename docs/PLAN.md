@@ -1,21 +1,19 @@
 # HACK-ATTACK v0: subscriptions, onboarding and channel distribution
 
-Status: built and tested locally (Postgres 16). Not deployed. Rev 2026-10-03 (hosting moved to Netlify only).
+Status: built and tested locally (Postgres 16). Not deployed. Rev 2026-10-02.
 
-## 1. Hosting (decided: Netlify only, 2026-10-03; replaces the earlier Netlify + Fly.io split)
+## 1. Hosting split (decided)
 
 | Concern | Where | Notes |
 |---|---|---|
-| Static site, `events.json`, `feed.xml`, `atom.xml`, `llms.txt`, event pages | Netlify static | Built by `scripts/build-site.ts` from the API's public endpoint. |
-| API (`src/api`) | Netlify Function `api` on `/v1/*`, `/healthz` | Fastify app run per request via `inject` (`src/platform/netlify.ts`). Same origin as the site. |
-| Worker (`src/worker`) | Netlify scheduled function `worker`, every minute | Drains the outbox for up to 15 s per run (30 s platform limit): retries, digests, hourly maintenance. |
-| State, job queue, audit | Netlify Database (Postgres, `NETLIFY_DB_URL`) | Queue is the `outbox` table (`FOR UPDATE SKIP LOCKED`); no Redis. |
-| Agents | TBD (future) | May create drafts and set status. Cannot approve: approval needs an operator token. |
+| Static site, `events.json`, `feed.xml`, `atom.xml`, `llms.txt`, event pages | Netlify | Built by `scripts/build-site.ts` from the API's public endpoint. No Netlify Functions. |
+| API (`src/api`) | Fly.io process `app` | Fastify. Public read, subscription forms, webhook management, operator endpoints. |
+| Worker (`src/worker`) | Fly.io process `worker` | Delivers the outbox, retries, digests, maintenance. |
+| State, job queue, audit | Fly Postgres (`DATABASE_URL`) | Queue is the `outbox` table (`FOR UPDATE SKIP LOCKED`); no Redis. |
+| Agents | Fly.io (future) | May create drafts and set status. Cannot approve: approval needs an operator token. |
 
-Netlify applies `netlify/database/migrations` before each production deploy is published. Secrets are Netlify
-environment variables, production context only (`docs/DEPLOY.md`; nothing secret is in the repo). Deploy
-previews are off, because each preview's database branch is a copy of production data. Trade-offs against the
-old split: up to about a minute of delivery latency, and sequential deliveries within each 15 s run.
+Migrations run as the Fly `release_command`. Secrets only through `fly secrets set` / Netlify UI
+(`.env.example` lists every variable; nothing secret is in the repo).
 
 ## 2. Broadcast gate and retraction
 
@@ -82,7 +80,7 @@ automatically. `GET /v1/admin/spend/x` shows month-to-date spend.
 
 ## 5. Proposal (not built): read-only MCP server
 
-- Separate Netlify Function on `/mcp`, Streamable HTTP transport (stateless), no auth, rate-limited per IP.
+- Separate Fly process `mcp`, Streamable HTTP transport, no auth, rate-limited per IP.
 - Reads only the public projection (`listPublicEvents`); no access to subscribers, outbox or audit tables
   (use a Postgres role with `SELECT` on `events` only, or call the public API).
 - Tools: `list_events(since?, severity_min?, category?, include_retracted=true)`, `get_event(slug)`,
@@ -104,7 +102,7 @@ automatically. `GET /v1/admin/spend/x` shows month-to-date spend.
    from X posts by default (cheaper tier per the brief's figures).
 7. **Webhook secret rotation** is immediate (no overlap window).
 8. **Retraction emails are not sent to people who have since unsubscribed.**
-9. **Hosting**: decided 2026-10-03, Netlify only (section 1). Fly.io dropped.
+9. **Fly app name and region** (`hack-attack-api`, `yyz`).
 
 ## 7. Unverified external facts
 
@@ -122,7 +120,7 @@ Not checked against live documentation in this session; verify before enabling e
 ## 8. Operator runbook (v0, API only; no admin UI yet)
 
 ```sh
-A="Authorization: Bearer $ADMIN_TOKEN"; J="content-type: application/json"; API=https://hack-attack.ai
+A="Authorization: Bearer $ADMIN_TOKEN"; J="content-type: application/json"; API=https://api.hack-attack.ai
 curl -XPOST $API/v1/admin/events -H "$A" -H "$J" -d '{"slug":"...","title":"...","summary":"...","severity":"high","categories":["jailbreak"]}'
 curl -XPOST $API/v1/admin/events/$ID/status  -H "$A" -H "$J" -d '{"status":"unconfirmed"}'
 curl -XPOST $API/v1/admin/events/$ID/status  -H "$A" -H "$J" -d '{"status":"confirmed"}'

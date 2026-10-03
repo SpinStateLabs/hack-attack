@@ -4,18 +4,17 @@ Public warning service for AI hacks and attacks - the hack-attack registry (hack
 
 Status: v0 subscriptions, onboarding and channel distribution built and tested locally; not deployed.
 Design, decisions awaiting sign-off and unverified external facts: [`docs/PLAN.md`](docs/PLAN.md).
-Deploy runbook (Netlify + DNS): [`docs/DEPLOY.md`](docs/DEPLOY.md).
+Deploy runbook (Fly.io + Netlify + DNS): [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Layout
 
-- `src/api` - Fastify API (Netlify Function `netlify/functions/api.mts`): public feeds, subscription forms, webhook management, operator endpoints
-- `src/worker` - outbox delivery, retries, digests (Netlify scheduled function `netlify/functions/worker.mts`)
+- `src/api` - Fastify API (Fly.io `app` process): public feeds, subscription forms, webhook management, operator endpoints
+- `src/worker` - outbox delivery, retries, digests (Fly.io `worker` process)
 - `src/channels` - one `ChannelAdapter` per channel (email, webhook, rss, telegram, bluesky, mastodon, x, linkedin, substack, whatsapp, truthsocial)
 - `src/domain` - events, broadcast gate, retraction, subscriptions, webhook onboarding
 - `src/lib` - SSRF guard, Standard Webhooks signing, signed tokens, Turnstile, rate limiting, audit
-- `src/platform/netlify.ts` - Netlify glue: request adapter, Netlify Database pool, time-boxed worker drain
-- `netlify/database/migrations` - Postgres schema (applied by Netlify on deploy; `npm run migrate` locally)
-- `site/` - static site; `scripts/build-site.ts` generates feeds and event pages from the API
+- `src/db/migrations` - Postgres schema
+- `site/` - static site for Netlify; `scripts/build-site.ts` generates feeds and event pages from the API
 - `HACK-ATTACK-BRAND.md`, `hack-attack-laser-palette.*` - brand draft and colour tokens
 
 ## Develop

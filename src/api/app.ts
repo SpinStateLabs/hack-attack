@@ -82,11 +82,11 @@ export async function createApp(deps: AppDeps) {
     return reply.code(500).send({ error: 'internal_error' });
   });
 
-  /**
-   * The socket address, never a request header (clients can send any header). On Netlify the function
-   * adapter (src/platform/netlify.ts) sets it from the platform's client IP.
-   */
-  const clientIp = (req: FastifyRequest) => req.ip;
+  /** Fly's edge proxy sets Fly-Client-IP; elsewhere use the socket address. */
+  const clientIp = (req: FastifyRequest) => {
+    const fly = req.headers['fly-client-ip'];
+    return config.production && typeof fly === 'string' ? fly : req.ip;
+  };
   const meta = (req: FastifyRequest): subs.RequestMeta => ({
     ip: clientIp(req),
     userAgent: req.headers['user-agent'],

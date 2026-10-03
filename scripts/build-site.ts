@@ -11,7 +11,7 @@ import { renderAtom, renderEventsJson, renderLlmsTxt, renderRss, type FeedSite }
 
 const SITE_DIR = join(import.meta.dirname, '..', 'site');
 const siteUrl = (process.env.PUBLIC_SITE_URL ?? 'https://hack-attack.ai').replace(/\/$/, '');
-const apiUrl = (process.env.PUBLIC_API_URL ?? siteUrl).replace(/\/$/, '');
+const apiUrl = (process.env.PUBLIC_API_URL ?? 'https://api.hack-attack.ai').replace(/\/$/, '');
 const site: FeedSite = {
   siteUrl,
   title: 'HACK-ATTACK',
