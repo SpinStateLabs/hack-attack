@@ -24,12 +24,21 @@ const LEASE_SECONDS = 120;
 const PER_RECIPIENT = new Set(['email', 'webhook']);
 const IDEMPOTENT = CHANNEL_NAMES.filter((n) => ADAPTERS[n].idempotent);
 
-/** One pass: recover stuck rows, schedule digests, deliver a batch of due rows. */
-export async function runOnce(deps: WorkerDeps, batchSize = 25): Promise<number> {
+/**
+ * One pass: recover stuck rows, schedule digests, deliver a batch of due rows. No delivery starts at or after
+ * `deadline` (epoch ms); claimed rows not yet started are handed back. Returns the number of rows processed.
+ */
+export async function runOnce(deps: WorkerDeps, batchSize = 25, deadline = Infinity): Promise<number> {
   await reclaimExpiredLeases(deps);
   await scheduleDigests(deps);
   const rows = await claim(deps.db, batchSize);
+  let done = 0;
   for (const row of rows) {
+    if (Date.now() >= deadline) {
+      await release(deps.db, rows.slice(done));
+      break;
+    }
+    done++;
     try {
       await processRow(deps, row);
     } catch (err) {
@@ -39,7 +48,7 @@ export async function runOnce(deps: WorkerDeps, batchSize = 25): Promise<number>
       await finish(deps.db, row, row.attempts < row.max_attempts ? 'pending' : 'failed', { error: `internal: ${msg}` }, 60);
     }
   }
-  return rows.length;
+  return done;
 }
 
 async function claim(db: Db, limit: number): Promise<OutboxRow[]> {
@@ -58,6 +67,15 @@ async function claim(db: Db, limit: number): Promise<OutboxRow[]> {
     [limit, LEASE_SECONDS],
   );
   return rows;
+}
+
+/** Undo the claim on rows that were never started: back to pending, the attempt not counted. */
+async function release(db: Db, rows: OutboxRow[]) {
+  await db.query(
+    `update outbox set status = 'pending', attempts = attempts - 1, lease_until = null, updated_at = now()
+     where id = any($1::uuid[]) and status = 'in_progress'`,
+    [rows.map((r) => r.id)],
+  );
 }
 
 /**
