@@ -1,8 +1,0 @@
-node_modules
-dist
-site
-test
-.git
-.env
-.env.*
-*.png
