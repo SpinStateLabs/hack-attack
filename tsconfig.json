@@ -12,5 +12,5 @@
     "rootDir": ".",
     "sourceMap": true
   },
-  "include": ["src", "test", "scripts", "netlify"]
+  "include": ["src", "test", "scripts"]
 }

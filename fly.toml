@@ -1,0 +1,41 @@
+# Fly.io: API + worker from one image, Postgres via DATABASE_URL (Fly Managed Postgres or Fly Postgres).
+# All secrets via `fly secrets set` (see .env.example for the list). Nothing secret in this file.
+app = "hack-attack-api"           # [decision needed] final app name
+primary_region = "yyz"            # [decision needed] region; yyz = Toronto
+
+[build]
+  dockerfile = "Dockerfile"
+
+[deploy]
+  # Runs once per deploy, before new machines start.
+  release_command = "node dist/db/migrate.js"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "8080"
+  PUBLIC_SITE_URL = "https://hack-attack.ai"
+  PUBLIC_API_URL = "https://api.hack-attack.ai"
+
+[processes]
+  app = "node dist/api/main.js"
+  worker = "node dist/worker/main.js"
+
+[http_service]
+  processes = ["app"]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    path = "/healthz"
+    timeout = "5s"
+
+[[vm]]
+  processes = ["app", "worker"]
+  size = "shared-cpu-1x"
+  memory = "512mb"

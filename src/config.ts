@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 /**
- * All configuration comes from environment variables. In production these are Netlify environment variables
- * (functions, and the site build for PUBLIC_*). Nothing secret lives in the repo.
+ * All configuration comes from environment variables. In production these are set with
+ * `fly secrets set` (API + worker) or the Netlify UI (site build). Nothing secret lives in the repo.
  */
 
 export const CHANNEL_NAMES = [
@@ -78,8 +78,7 @@ const EnvSchema = z.object({
   DATABASE_URL: z.string().min(1),
 
   PUBLIC_SITE_URL: z.string().url().default('https://hack-attack.ai'),
-  // The API is served from the site's origin (Netlify Function on /v1/*).
-  PUBLIC_API_URL: z.string().url().default('https://hack-attack.ai'),
+  PUBLIC_API_URL: z.string().url().default('https://api.hack-attack.ai'),
   CORS_ORIGINS: csv,
 
   // 32+ byte secrets, base64 or hex. Generate with: openssl rand -base64 32
