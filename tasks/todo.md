@@ -53,3 +53,22 @@ onboarding (build in v0)", "Channel distribution (build in v0)").
 - Not done: deployment (no Fly/Netlify credentials used), admin UI (operator uses the API), MCP server
   (proposal only, docs/PLAN.md section 5), live verification of third-party API details (docs/PLAN.md
   section 7).
+
+# Deploy hack-attack.ai (Fly.io + Netlify, account don@spinstatelabs.ca)
+
+Runbook: `docs/DEPLOY.md`. Not executed from the cloud session: its Netlify connector is signed in to a
+different (personal) Netlify account, and its network policy blocks api.fly.io and
+api.netlify.com.
+
+- [x] Pre-flight (local, Postgres 16): compiled `migrate.js` applies and re-runs cleanly; API in
+      `NODE_ENV=production` serves `/healthz` 200 and `/v1/public/events`; worker starts with all channels
+      dry-run; `build:site` succeeds against the live API; prod config refuses to boot without
+      `TURNSTILE_SECRET_KEY`.
+- [x] PgBouncer compatibility checked: only `pg_advisory_xact_lock`, no LISTEN/NOTIFY or named statements.
+- [ ] Docker image build (not run: no Docker daemon in the session; Fly builds remotely).
+- [ ] Turnstile widget (Cloudflare) -> site key + secret key
+- [ ] Fly: app, Managed Postgres (yyz), secrets, deploy, `/healthz` on fly.dev
+- [ ] Netlify: import repo, env vars, deploy, build hook -> `NETLIFY_BUILD_HOOK_URL`
+- [ ] DNS: apex + www -> Netlify, api -> Fly; certificates issued
+- [ ] Verify (runbook section 4)
+- [ ] Email stays dry-run until provider + CASL address decided (PLAN.md §6.1-6.2)

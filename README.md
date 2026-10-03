@@ -4,6 +4,7 @@ Public warning service for AI hacks and attacks - the hack-attack registry (hack
 
 Status: v0 subscriptions, onboarding and channel distribution built and tested locally; not deployed.
 Design, decisions awaiting sign-off and unverified external facts: [`docs/PLAN.md`](docs/PLAN.md).
+Deploy runbook (Fly.io + Netlify + DNS): [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Layout
 
